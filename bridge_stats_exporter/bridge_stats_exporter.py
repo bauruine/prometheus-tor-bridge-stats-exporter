@@ -17,18 +17,18 @@ class OnionooCollector(object):
     def collect(self):
         # Metrics
 
-        bridge_stats_countries  = GaugeMetricFamily(
-            'bridge_stats_countries',
+        tor_bridge_stats_countries  = GaugeMetricFamily(
+            'tor_bridge_stats_countries',
             'Number of connected users per country',
             labels = ['country', 'tor_instance']
         )
-        bridge_stats_ip_version = GaugeMetricFamily(
-            'bridge_stats_ip_version',
+        tor_bridge_stats_ip_version = GaugeMetricFamily(
+            'tor_bridge_stats_ip_version',
             'Number of connvetions per ip version',
             labels = ['ip_version', 'tor_instance']
         )
-        bridge_stats_transport = GaugeMetricFamily(
-            'bridge_stats_transports',
+        tor_bridge_stats_transport = GaugeMetricFamily(
+            'tor_bridge_stats_transports',
             'Number of connections per transport method',
             labels = ['transport', 'tor_instance']
         )
@@ -53,21 +53,21 @@ class OnionooCollector(object):
                             for entry in search:
                                 if re.search(r'bridge-ips', line):
                                     labels = dict(country=entry[0], tor_instance=tor_instance)
-                                    bridge_stats_countries.add_metric(list(labels.values()), entry[1])
+                                    tor_bridge_stats_countries.add_metric(list(labels.values()), entry[1])
                                 if re.search(r'bridge-ip-versions', line):
                                     labels = dict(ip_version=entry[0], tor_instance=tor_instance)
-                                    bridge_stats_ip_version.add_metric(list(labels.values()), entry[1])
+                                    tor_bridge_stats_ip_version.add_metric(list(labels.values()), entry[1])
                     elif re.search(r'bridge-ip-transports', line):
                         search = re.findall('(\w+)=(\d+)', line)
                         if search:
                             for entry in search:
                                 labels = dict(transport=entry[0], tor_instance=tor_instance)
-                                bridge_stats_transport.add_metric(list(labels.values()), entry[1])
+                                tor_bridge_stats_transport.add_metric(list(labels.values()), entry[1])
 
 
-        yield bridge_stats_countries
-        yield bridge_stats_ip_version
-        yield bridge_stats_transport
+        yield tor_bridge_stats_countries
+        yield tor_bridge_stats_ip_version
+        yield tor_bridge_stats_transport
 
 
 def main():
