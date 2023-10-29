@@ -142,7 +142,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (country) (tor_bridge_stats_countries{tor_instance=~\"$tor_instance\", instance=~\"$node\"})",
+          "expr": "sum by (country) (tor_bridge_stats_countries{tor_instance=~\"$tor_instance\", instance=~\"$node\", country=~\"$country\"})",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -234,7 +234,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (ip_version) (tor_bridge_stats_ip_version{tor_instance=~\"$tor_instance\"})",
+          "expr": "sum by (ip_version) (tor_bridge_stats_ip_version{tor_instance=~\"$tor_instance\", instance=~\"$node\"})",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -351,7 +351,7 @@
         },
         "definition": "label_values(tor_bridge_stats_countries, tor_instance)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "multi": true,
         "name": "tor_instance",
         "options": [],
@@ -367,6 +367,10 @@
       },
       {
         "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(tor_bridge_stats_countries, instance)",
         "description": "",
         "hide": 0,
@@ -383,17 +387,39 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(tor_bridge_stats_countries, country)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "country",
+        "options": [],
+        "query": {
+          "query": "label_values(tor_bridge_stats_countries, country)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Tor bridge stats",
   "uid": "7hpv0XnIz",
-  "version": 5,
+  "version": 8,
   "weekStart": ""
 }
